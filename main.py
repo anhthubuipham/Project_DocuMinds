@@ -42,13 +42,21 @@ def extract_text(file_path):
         print(f"Error reading file {file_path}: {e}")
     return ""
 
-# Simple rule-based classification
+import joblib
+
+# Load the trained model once at the beginning
+model = joblib.load("mock_document_classifier.joblib")  # adjust path if needed
+
 def classify_text(text):
-    text = text.lower()
-    for category, keywords in CATEGORIES.items():
-        if any(keyword in text for keyword in keywords):
-            return category
-    return "Unsorted"
+    return model.predict([text])[0] 
+    #machine learning model trained using scikit-learn
+    # uses Logistic Regression, a common classification algorithm
+    #It analyzes the text content of documents and predicts a category like "Invoices", "Work", etc.
+
+
+
+
+
 
 # Move file into sorted folder
 def move_file(file_path, category):
@@ -107,3 +115,5 @@ def ask_for_feedback(decisions):
 if __name__ == "__main__":
     results = sort_documents()
     ask_for_feedback(results)
+
+
